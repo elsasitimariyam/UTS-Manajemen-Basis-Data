@@ -1,0 +1,31 @@
+services:
+  postgres_elsa:
+    image: postgres:15
+    container_name: postgres_elsa
+    env_file:
+      - .env
+    ports:
+      - "22039:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pgnetwork
+
+  pgadmin_elsa:
+    image: dpage/pgadmin4
+    container_name: pgadmin_elsa
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@elsa.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "44039:80"
+    depends_on:
+      - postgres_elsa
+    networks:
+      - pgnetwork
+
+volumes:
+  postgres_data:
+
+networks:
+  pgnetwork:
